@@ -32,8 +32,13 @@ pipeline.enable_model_cpu_offload()
 with open("prompts.txt", "r") as file:
     prompts = file.readlines()
 
+i = 0
+
 for prompt in prompts:
     prompt = prompt.strip()
+    if prompt.endswith(","):
+        prompt = prompt[:-1]
+    prompt = prompt[1:-1]
     image1 = None
     image2 = None
     image1 = pipeline(
@@ -48,6 +53,8 @@ for prompt in prompts:
     ).images[0]
     image1.save(f"results/{prompt}_1.png")
     image2.save(f"results/{prompt}_2.png")
+    i += 1
+    print(f"Finished {i} prompts")
 
 '''
 prompt = "A whimsical illustration of a small village in the forest, with a river running through it."
